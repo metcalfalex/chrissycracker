@@ -1,13 +1,11 @@
-# cd ~/gitnot/chrissycracker/
-# python script02.py
+# cd ~/git/chrissycracker/
+# python script.py
 
 
 import urllib.request
 from bs4 import BeautifulSoup
 import csv
 from random import randint
-
-# subject = 'rain'
 
 def fn_wordassociated(subject):
 	with open('associations.csv','r') as infile:
@@ -36,6 +34,8 @@ def fn_associate(subject):
 		with open('associations.csv', 'a') as outfile:
 			wr = csv.writer(outfile)
 			wr.writerow(linksto_array)
+		print('Added:',subject)
+
 
 def fn_pickrandomrow():
 	rint = randint(0,len(open('associations.csv','r').readlines()))
@@ -43,24 +43,21 @@ def fn_pickrandomrow():
 		reader = csv.DictReader(infile)
 		for i, row in enumerate(reader):
 			if i == rint:
-				rrow = row
 				print('====================')
-				print(rrow['subject'].upper())
+				print(row['subject'].upper())
 				print('====================')
-				return(rrow)
+				return(row)
 				break
 
-def fn_pickspecificrow():
-	rint = randint(0,len(open('associations.csv','r').readlines()))
+def fn_pickspecificrow(word):
 	with open('associations.csv','r') as infile:
 		reader = csv.DictReader(infile)
-		for i, row in enumerate(reader):
-			if i == rint:
-				rrow = row
+		for row in reader:
+			if row['subject'] == word:
 				print('====================')
-				print(rrow['subject'].upper())
+				print(row['subject'].upper())
 				print('====================')
-				return(rrow)
+				return(row)
 				break
 
 def fn_getassociations(associations):
@@ -73,6 +70,10 @@ def fn_getassociations(associations):
 			for row in reader:
 				if row['subject'] != associations['subject'] and associations[assoc] in row.values() and associations[assoc] != row['subject']: print(row['subject'])
 
-# fn_getassociations(fn_pickrandomrow())
-# fn_pickrandomrow()
-# fn_pickspecificrow()
+
+fn_getassociations(fn_pickrandomrow())
+
+# subject = 'fruit'
+# fn_associate(subject)
+# fn_getassociations(fn_pickspecificrow(subject))
+
